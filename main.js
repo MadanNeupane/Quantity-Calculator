@@ -1,24 +1,34 @@
 
-// Function to change the amount to Mg given unit and amount
-const toMg = (unit, amount) => {
+// Function to change the amount to Oz given unit and amount
+const toOz = (unit, amount) => {
     if (unit=="percentage") {
-        amountInMg = Number(amount) * 10;
+        amountInOz = Number(amount) * 0.0125;
+    } else if (unit=="mg"){
+        amountInOz = Number(amount) * 0.00125;
     } else if (unit=="gram"){
-        amountInMg = Number(amount) * 1000;
+        amountInOz = Number(amount) * 0.03571428571;
     } else {
-        amountInMg = Number(amount);
+        amountInOz = Number(amount);
     }
-    return amountInMg;
+    return amountInOz;
 };
 
 // Function to add the sum and return the totalin gm and Oz. This expects the parameters to be 3 values in mg.
 const totalAmount = (firstAmount, secondAmount, thirdAmount) => {
-    let totalInMg = firstAmount + secondAmount + thirdAmount;
-    var totalInGm = (totalInMg/1000).toFixed(2);
-    var totalInOz = (totalInGm/28.34952312).toFixed(3);
+    let totalInOz = (firstAmount + secondAmount + thirdAmount).toFixed(3);
+    var totalInGm = (totalInOz*28).toFixed(2);
     return {totalInGm, totalInOz};
 }
- 
+
+let concentrateAmount = 0;
+let edibleAmount = 0;
+let flowerAmount = 0;
+
+// unit values
+let concentrateUnit = 'percentage';
+let edibleUnit = 'mg';
+let flowerUnit = 'gram';
+
 const changeTotal = () => {
     // Getting Input objects
     let concentrate = document.getElementById('concentrate');
@@ -26,22 +36,17 @@ const changeTotal = () => {
     let flower = document.getElementById('flower');
 
     // Getting Input values
-    let concentrateAmount = concentrate.value;
-    let edibleAmount = edible.value;
-    let flowerAmount = flower.value;
+    concentrateAmount += Number(concentrate.value);
+    edibleAmount += Number(edible.value);
+    flowerAmount += Number(flower.value);
 
-    // Getting Select values
-    let concentrateUnit = document.getElementById('concentrate-unit').value;
-    let edibleUnit = document.getElementById('edible-unit').value;
-    let flowerUnit = document.getElementById('flower-unit').value;
+    // Converting different unit amounts to oz amount using toOz() function
+    let concentrateAmountInOz = toOz(concentrateUnit, concentrateAmount);
+    let edibleAmountInOz = toOz(edibleUnit, edibleAmount);
+    let flowerAmountInOz = toOz(flowerUnit, flowerAmount);
 
-    // Converting different unit amounts to mg amount using toMg() function
-    let concentrateAmountInMg = toMg(concentrateUnit, concentrateAmount);
-    let edibleAmountInMg = toMg(edibleUnit, edibleAmount);
-    let flowerAmountInMg = toMg(flowerUnit, flowerAmount);
-
-    let total_obj = totalAmount(concentrateAmountInMg, edibleAmountInMg, flowerAmountInMg);
     // Executing changeTotal function and applying them in HTML
+    let total_obj = totalAmount(concentrateAmountInOz, edibleAmountInOz, flowerAmountInOz);
     
     document.getElementById("amount-in-oz").innerHTML = `${total_obj.totalInOz} oz`;
     document.getElementById("amount-in-gram").innerHTML = `(${total_obj.totalInGm} gram).`;
@@ -56,7 +61,7 @@ const changeTotal = () => {
     }
 
     //add amount description at buttom
-    document.getElementById("amount-description").innerHTML = `<b>Equivalent amounts in mg</b>:<br/>Concentrate: ${concentrateAmountInMg} mg.<br/>Edible: ${edibleAmountInMg} mg.<br/>Flower: ${flowerAmountInMg} mg.`;
+    document.getElementById("amount-description").innerHTML = `<b>Total in Quantity</b>:<br/>Concentrate: ${concentrateAmount}%.<br/>Edible: ${edibleAmount} mg.<br/>Flower: ${flowerAmount} gram.`;
 }
 
 // This function is to be executed when the user click reset button
