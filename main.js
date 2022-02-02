@@ -1,7 +1,7 @@
 
 // Function to change the amount to Oz given unit and amount
 const toOz = (unit, amount) => {
-    if (unit=="percentage") {
+    if (unit=="gm") {
         amountInOz = Number(amount) * 0.12499999998;
     } else if (unit=="mg"){
         amountInOz = Number(amount) * 0.00125;
@@ -25,7 +25,7 @@ let edibleAmount = 0;
 let flowerAmount = 0;
 
 // unit values
-let concentrateUnit = 'percentage';
+let concentrateUnit = 'gm';
 let edibleUnit = 'mg';
 let flowerUnit = 'gram';
 
@@ -61,7 +61,10 @@ const changeTotal = () => {
     }
 
     //add amount description at buttom
-    document.getElementById("amount-description").innerHTML = `<b>Total in Quantity</b>:<br/>Concentrate: ${concentrateAmount}%.<br/>Edible: ${edibleAmount} mg.<br/>Flower: ${flowerAmount} gram.`;
+    document.getElementById("amount-description").innerHTML = `<b>Total in Quantity</b>:<br/>Concentrate: ${concentrateAmount.toFixed(2)} gram.<br/>Edible: ${edibleAmount.toFixed(2)} mg.<br/>Flower: ${flowerAmount.toFixed(2)} gram.`;
+    concentrate.value = '';
+    edible.value = '';
+    flower.value = '';
 }
 
 // This function is to be executed when the user click reset button
