@@ -16,7 +16,7 @@ const toOz = (unit, amount) => {
 // Function to add the sum and return the totalin gm and Oz. This expects the parameters to be 3 values in mg.
 const totalAmount = (firstAmount, secondAmount, thirdAmount) => {
     let totalInOz = (firstAmount + secondAmount + thirdAmount).toFixed(3);
-    var totalInGm = (totalInOz*28).toFixed(2);
+    var totalInGm = ((firstAmount + secondAmount + thirdAmount)*28).toFixed(2);
     return {totalInGm, totalInOz};
 }
 
